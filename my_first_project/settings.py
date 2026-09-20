@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Our new app
     'hello_world',
+    'library',
 ]
 
 MIDDLEWARE = [
