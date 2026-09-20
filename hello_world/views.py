@@ -4,10 +4,10 @@ def hello_world(request):
     html = """
     <html>
     <head>
-        <title>Hello,t World!</title>
+        <title>Hello,World!</title>
     </head>
     <body>
-        <h1 style="color: blue;">Hello,r World!</h1>
+        <h1 style="color: blue;">Hello,World!</h1>
         <p>Welcome to Django!</p>
     </body>
     </html>
