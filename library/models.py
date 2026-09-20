@@ -1,9 +1,7 @@
 from django.db import models
-
-# Create your models here.
-
 from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import User
 
 
 class Author(models.Model):
@@ -37,12 +35,24 @@ class Publisher(models.Model):
         ordering = ['name']
 
 
+class Genre(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
+
 class Book(models.Model):
     GENRE_CHOICES = [
         ('F', 'Fiction'), ('NF', 'Non-Fiction'), ('SF', 'Science Fiction'),
         ('FAN', 'Fantasy'), ('MYS', 'Mystery'), ('THR', 'Thriller'),
         ('ROM', 'Romance'), ('HIS', 'Historical'), ('BIO', 'Biography'),
     ]
+
+    genres = models.ManyToManyField(Genre, blank=True, related_name='books')
 
     title = models.CharField(max_length=200, help_text="The book's full title")
     subtitle = models.CharField(max_length=200, blank=True)
@@ -67,3 +77,14 @@ class Book(models.Model):
         ordering = ['title']
         verbose_name = "Book"
         verbose_name_plural = "Books"
+
+
+class Review(models.Model):
+    book = models.OneToOneField(Book, on_delete=models.CASCADE, related_name='review')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Review of {self.book.title}"
