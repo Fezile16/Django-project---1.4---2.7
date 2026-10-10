@@ -45,6 +45,14 @@ class Genre(models.Model):
         ordering = ['name']
 
 
+class BookManager(models.Manager):
+    def available(self):
+        return self.get_queryset().filter(is_available=True)
+
+    def high_rated(self, threshold=4):
+        return self.get_queryset().filter(rating__gte=threshold)
+
+
 class Book(models.Model):
     GENRE_CHOICES = [
         ('F', 'Fiction'), ('NF', 'Non-Fiction'), ('SF', 'Science Fiction'),
@@ -70,13 +78,26 @@ class Book(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = BookManager()
+
     def __str__(self):
         return self.title
+
+    def can_be_borrowed(self):
+        return self.is_available
+
+    @property
+    def age(self):
+        return (timezone.now().date() - self.publication_date).days // 365
 
     class Meta:
         ordering = ['title']
         verbose_name = "Book"
         verbose_name_plural = "Books"
+        indexes = [
+            models.Index(fields=['title']),
+            models.Index(fields=['genre']),
+        ]
 
 
 class Review(models.Model):
