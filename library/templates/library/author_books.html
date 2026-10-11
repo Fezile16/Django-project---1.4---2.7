@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Books by {{ author }} - My Library{% endblock %}
+
+{% block content %}
+<h1>Books by {{ author.first_name }} {{ author.last_name }}</h1>
+{% if author.biography %}<p>{{ author.biography }}</p>{% endif %}
+
+{% for book in books %}
+    <div class="card">
+        <a href="{% url 'library:detail' book.pk %}">{{ book.title }}</a>
+        <span class="muted">({{ book.publication_date|date:"Y" }})</span>
+    </div>
+{% empty %}
+    <p>No books for this author yet.</p>
+{% endfor %}
+
+<p><a href="{% url 'library:list' %}">&larr; Back to all books</a></p>
+{% endblock %}

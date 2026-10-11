@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}About - {{ library_name }}{% endblock %}
+
+{% block content %}
+<h1>About {{ library_name }}</h1>
+<p>We currently have {{ total_books }} book{{ total_books|pluralize }} in the collection.</p>
+<ul>
+    {% for feature in features %}
+        <li>{{ feature }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
