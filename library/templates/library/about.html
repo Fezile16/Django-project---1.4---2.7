@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load library_tags %}
 
 {% block title %}About - {{ library_name }}{% endblock %}
 
@@ -10,4 +11,12 @@
         <li>{{ feature }}</li>
     {% endfor %}
 </ul>
+
+<h3>Random picks</h3>
+{% get_random_books 3 as picks %}
+{% for book in picks %}
+    {% book_card book %}
+{% empty %}
+    <p>No books yet.</p>
+{% endfor %}
 {% endblock %}

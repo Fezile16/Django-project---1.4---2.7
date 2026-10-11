@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load library_tags %}
 
-{% block title %}{{ book.title }} - My Library{% endblock %}
+{% block title %}{{ book.title }} - {{ SITE_NAME }}{% endblock %}
 
 {% block content %}
 <p><a href="{% url 'library:list' %}">&larr; Back to all books</a></p>
@@ -16,10 +17,15 @@
     <p>ISBN: {{ book.isbn }}</p>
     <p>Publisher: {{ book.publisher|default:"Unknown" }}</p>
     <p>Published: {{ book.publication_date|date:"F j, Y" }} ({{ book.age }} years ago)</p>
-    <p>Pages: {{ book.pages }} &middot; Rating: {{ book.rating }}/5</p>
+    <p>Pages: {{ book.pages }} &middot; Rating: {{ book.rating|stars }} ({{ book.rating }}/5)</p>
     <p>{% if book.is_available %}Available to borrow{% else %}Currently unavailable{% endif %}</p>
-    <h3>Summary</h3>
+    <h3>Summary <span class="muted">({{ book.summary|reading_time }})</span></h3>
     {{ book.summary|linebreaks }}
+
+    <p>
+        <a class="button" href="{% url 'library:edit' book.pk %}">Edit</a>
+        <a class="button danger" href="{% url 'library:delete' book.pk %}">Delete</a>
+    </p>
 </div>
 
 {% if author_books %}
@@ -35,7 +41,7 @@
 <h3>Similar books</h3>
 <ul>
     {% for b in similar_books %}
-        <li><a href="{% url 'library:detail' b.pk %}">{{ b.title }}</a> ({{ b.rating }}/5)</li>
+        <li><a href="{% url 'library:detail' b.pk %}">{{ b.title }}</a> ({{ b.rating|stars }})</li>
     {% endfor %}
 </ul>
 {% endif %}

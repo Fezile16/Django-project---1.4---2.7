@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Library{% endblock %}</title>
+    <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; background: #f5f7fa; color: #2c3e50; }
         header { background: #2c3e50; padding: 1rem 2rem; }
@@ -14,23 +14,37 @@
         .badge { background: #3498db; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
         .muted { color: #7f8c8d; }
         .alert { padding: 0.75rem 1rem; border-radius: 6px; background: #eaf4fd; margin-bottom: 1rem; }
+        .alert.success { background: #e6f7ee; }
+        .alert.error { background: #fdecea; }
+        button, .button { background: #3498db; color: white; border: 0; padding: 0.5rem 1rem;
+                          border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .danger { background: #e74c3c; }
+        .field { margin-bottom: 1rem; }
+        .field label { font-weight: bold; display: block; }
+        .required, .error-text { color: #c0392b; }
+        .stacked input:not([type=checkbox]), .stacked select, .stacked textarea {
+            width: 100%; padding: 0.5rem; margin: 0.25rem 0 0.75rem;
+            border: 1px solid #ccd6dd; border-radius: 6px; box-sizing: border-box; }
         footer { text-align: center; color: #7f8c8d; padding: 2rem; }
     </style>
 </head>
 <body>
     <header>
-        <a href="{% url 'library:list' %}">Library</a>
+        <a href="{% url 'library:list' %}">{{ SITE_NAME }}</a>
+        <a href="{% url 'library:search' %}">Search</a>
+        <a href="{% url 'library:add' %}">Add Book</a>
         <a href="{% url 'library:about' %}">About</a>
+        <a href="{% url 'library:contact' %}">Contact</a>
         <a href="/admin/">Admin</a>
     </header>
     <main>
         {% if messages %}
             {% for message in messages %}
-                <div class="alert">{{ message }}</div>
+                <div class="alert {{ message.tags }}">{{ message }}</div>
             {% endfor %}
         {% endif %}
         {% block content %}{% endblock %}
     </main>
-    <footer>&copy; {% now "Y" %} My Library - Built with Django</footer>
+    <footer>&copy; {{ YEAR }} {{ SITE_NAME }} - Built with Django</footer>
 </body>
 </html>

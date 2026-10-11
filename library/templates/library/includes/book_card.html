@@ -1,0 +1,13 @@
+{% load library_tags %}
+<div class="card">
+    <h3><a href="{% url 'library:detail' book.pk %}">{{ book.title }}</a></h3>
+    <p>
+        by <a href="{% url 'library:author-books' book.author.pk %}">{{ book.author }}</a>
+        <span class="badge">{{ book.get_genre_display }}</span>
+    </p>
+    <p class="muted">
+        Published {{ book.publication_date|date:"F j, Y" }} &middot;
+        {{ book.pages }} pages &middot; {{ book.rating|stars }}
+    </p>
+    {% if book.is_available %}Available{% else %}Not available{% endif %}
+</div>

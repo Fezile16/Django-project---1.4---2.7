@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load library_tags %}
+
+{% block title %}Search - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<h1>Search books</h1>
+
+<form method="get" class="card stacked">
+    {{ form.as_p }}
+    <button type="submit">Search</button>
+</form>
+
+{% if searched %}
+    <h3>{{ books|length }} result{{ books|length|pluralize }}</h3>
+    {% for book in books %}
+        {% book_card book %}
+    {% empty %}
+        <p>No books matched your search.</p>
+    {% endfor %}
+{% endif %}
+{% endblock %}

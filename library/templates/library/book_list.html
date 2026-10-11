@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
+{% load library_tags %}
 
-{% block title %}All Books - My Library{% endblock %}
+{% block title %}All Books - {{ SITE_NAME }}{% endblock %}
 
 {% block content %}
 <h1>Books ({{ total_books }})</h1>
+
+<p>
+    <a class="button" href="{% url 'library:add' %}">+ Add a book</a>
+    <a href="{% url 'library:search' %}">Advanced search</a>
+</p>
 
 <form method="get" class="card">
     <input type="text" name="q" placeholder="Search title or author" value="{{ search_query }}">
@@ -17,18 +23,7 @@
 </form>
 
 {% for book in books %}
-    <div class="card">
-        <h3><a href="{% url 'library:detail' book.pk %}">{{ book.title }}</a></h3>
-        <p>
-            by <a href="{% url 'library:author-books' book.author.pk %}">{{ book.author }}</a>
-            <span class="badge">{{ book.get_genre_display }}</span>
-        </p>
-        <p class="muted">
-            Published {{ book.publication_date|date:"F j, Y" }} &middot;
-            {{ book.pages }} pages &middot; Rating {{ book.rating }}/5
-        </p>
-        {% if book.is_available %}Available{% else %}Not available{% endif %}
-    </div>
+    {% book_card book %}
 {% empty %}
     <p>No books found.</p>
 {% endfor %}

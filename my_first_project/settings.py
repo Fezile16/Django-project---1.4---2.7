@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'library.context_processors.site_settings',
             ],
         },
     },
@@ -128,3 +129,7 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+# Chapter 3: send anyone not logged in to the admin login for now (Chapter 4 builds a real login page)
+LOGIN_URL = '/admin/login/'
+
